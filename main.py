@@ -13,6 +13,9 @@ from trainer import train, validate, test
 from numpy import arange
 from numpy.random import mtrand
 
+from os.path import isdir
+from os import mkdir
+
 # utils for logger
 class Logger(object):
     def __init__(self, filename, stream=sys.stdout):
@@ -103,6 +106,8 @@ if __name__ == '__main__':
     print('[ID]', identity)
 
     # put all printed things to log file
+    if not isdir('./logs'):
+        mkdir('logs')
     logfile = open('./logs/'+identity+'_log.txt', 'a')
     sys.stdout = Logger('./logs/'+identity+'_log.txt', sys.stdout)
 
@@ -258,17 +263,3 @@ if __name__ == '__main__':
 
     else:
         test(model, args, use_cuda = use_cuda)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
