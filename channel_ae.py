@@ -39,7 +39,14 @@ class Channel_AE(torch.nn.Module):
 
         # Setup channel mode:
         if self.args.channel in ['awgn', 't-dist', 'radar', 'ge_awgn']:
-            received_codes = codes + fwd_noise
+            m3 =-0.3**2/2
+            f2 = np.random.lognormal(m3, .3, 120000)
+            f2 =  np.reshape(f2,(400,100,3))
+            f2 = torch.Tensor(f2).to(self.this_device)
+
+            # print(codes.size())
+            # print(f2.size())
+            received_codes = (codes + fwd_noise /f2)
 
         elif self.args.channel == 'bec':
             received_codes = codes * fwd_noise
@@ -62,7 +69,14 @@ class Channel_AE(torch.nn.Module):
             # corrupted_signal = fading_h *(2.0*input_signal-1.0) + noise
         else:
             print('default AWGN channel')
-            received_codes = codes + fwd_noise
+            m3 =-0.3**2/2
+            f2 = np.random.lognormal(m3, .3, 120000)
+            f2 =  np.reshape(f2,(400,100,3))
+            f2 = torch.Tensor(f2).to(self.this_device)
+            # print(codes.size())
+            # print(f2.size())
+            # print(codes.size())
+            received_codes = (codes + fwd_noise /f2)
 
         if self.args.rec_quantize:
             myquantize = MyQuantize.apply
