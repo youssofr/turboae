@@ -67,7 +67,9 @@ def errors_bler(y_true, y_pred, positions = 'default'):
 
 # note there are a few definitions of SNR. In our result, we stick to the following SNR setup.
 def snr_db2sigma(train_snr):
-    return 10**(-train_snr*1.0/20)
+    # return 10**(-train_snr*1.0/20)
+    return (2*10 ** (train_snr * 1.0 / 10))**-0.5
+
 
 def snr_sigma2db(train_sigma):
     try:
