@@ -68,6 +68,10 @@ class CNN_encoder(FB_encoder_base):
             x     = self.enc_cnn(bpsk_x)
             x     = F.elu(self.enc_linear(x))
             code  = self.power_constraint(x)
+            
+            X_min = torch.min(codes,dim=0).values
+            X_max = torch.max(codes,dim=0).values
+            code = 2* (codes-X_min) / (X_max-X_min)
             return code
 
         else:
@@ -75,6 +79,10 @@ class CNN_encoder(FB_encoder_base):
             x     = self.enc_cnn(x_int)
             x     = F.elu(self.enc_linear(x))
             code  = self.power_constraint(x)
+            
+            X_min = torch.min(codes,dim=0).values
+            X_max = torch.max(codes,dim=0).values
+            code = 2* (codes-X_min) / (X_max-X_min)
             return code
 
 
