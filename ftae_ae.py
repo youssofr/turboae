@@ -347,12 +347,18 @@ class Channel_Feedback_rate3(torch.nn.Module):
         fb_z1  = fb_z[:,:,0].view((self.args.batch_size, block_len, 1))
         fb_z2  = fb_z[:,:,1].view((self.args.batch_size, block_len, 1))
         fb_z3  = fb_z[:,:,2].view((self.args.batch_size, block_len, 1)) # 3nd phase not used....
-
+        
+        # fading noise
+        m3 =-0.3**2/2
+        f2 = np.random.lognormal(m3, .3, 120000)
+        f2 = np.reshape(f2,(400,100,3))
+        f2 = torch.Tensor(f2).to(self.this_device)
+        
         # Code Phase 1
         x_1 = self.fwd_enc1(inputs)
-        y_1 = x_1 + fwd_z1
+        y_1 = x_1 + fwd_z1/f2
         f_1 = self.fb_enc1(y_1)
-        r_1 = f_1 + fb_z1
+        r_1 = f_1 + fb_z1/f2
 
         # Code Phase 2
         if self.args.ignore_feedback:
@@ -362,10 +368,10 @@ class Channel_Feedback_rate3(torch.nn.Module):
 
         input_2 = torch.cat([inputs, r_1, x_1], dim=2)
         x_2 = self.fwd_enc2(input_2)
-        y_2 = x_2 + fwd_z2
+        y_2 = x_2 + fwd_z2/f2
         y_input = torch.cat([y_1, y_2], dim=2)
         f_2 = self.fb_enc2(y_input)
-        r_2 = f_2 + fb_z2
+        r_2 = f_2 + fb_z2/f2
 
         # Code Phase 3
         if self.args.ignore_feedback:
@@ -375,7 +381,7 @@ class Channel_Feedback_rate3(torch.nn.Module):
 
         input_3 = torch.cat([inputs, r_1, x_1, r_2, x_2], dim=2)
         x_3 = self.fwd_enc3(input_3)
-        y_3 = x_3 + fwd_z3
+        y_3 = x_3 + fwd_z3/f2
 
         codes = torch.cat([x_1, x_2, x_3], dim=2)
 
