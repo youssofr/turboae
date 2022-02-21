@@ -3,6 +3,8 @@ import torch
 import torch.optim as optim
 import numpy as np
 import sys
+from os.path import isdir
+from os import 
 from ftae_get_args import get_args
 from ftae_trainer  import ftae_train, ftae_validate, ftae_test
 
@@ -31,6 +33,10 @@ if __name__ == '__main__':
     #################################################
     identity = str(np.random.random())[2:8]
     print('[ID]', identity)
+    
+    # create logs file first
+    if not isdir('./logs'):
+        mkdir('logs')
 
     # put all printed things to log file
     logfile = open('./logs/ftae'+identity+'_log.txt', 'a')
