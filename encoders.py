@@ -373,6 +373,9 @@ class ENC_interCNN(ENCBase):
         x_tx       = torch.cat([x_sys,x_p1, x_p2], dim = 2)
 
         codes = self.power_constraint(x_tx)
+        X_min = torch.min(codes,dim=0).values
+        X_max = torch.max(codes,dim=0).values
+        codes = 2* (codes-X_min) / (X_max-X_min)
 
         return codes
 
