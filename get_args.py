@@ -21,7 +21,7 @@ def get_args():
                                              'Turbo_rate3_lte',        # Turbo Code, rate 1/3, LTE.
                                              'turboae_2int', # experimental, use multiple interleavers
                                             ],
-                        default='TurboAE_rate3_cnn2d')
+                        default='TurboAE_rate3_cnn')
 
     parser.add_argument('-decoder', choices=['TurboAE_rate3_rnn',      # TurboAE Decoder, rate 1/3
                                              'TurboAE_rate3_cnn',      # TurboAE Decoder, rate 1/3, Same Shape 1D CNN Decoder
@@ -36,7 +36,7 @@ def get_args():
                                              'rate3_cnn2d',
                                              'turboae_2int', # experimental, use multiple interleavers
                                             ],
-                        default='TurboAE_rate3_cnn2d')
+                        default='TurboAE_rate3_cnn')
     ################################################################
     # Channel related parameters
     ################################################################
@@ -115,8 +115,8 @@ def get_args():
     parser.add_argument('-snr_test_end', type=float, default=4.0)
     parser.add_argument('-snr_points', type=int, default=12)
 
-    parser.add_argument('-batch_size', type=int, default=100)
-    parser.add_argument('-num_epoch', type=int, default=1)
+    parser.add_argument('-batch_size', type=int, default=400)
+    parser.add_argument('-num_epoch', type=int, default=5)
     parser.add_argument('-test_ratio', type=int, default=1,help = 'only for high SNR testing')
     # block length related
     parser.add_argument('-block_len', type=int, default=100)
@@ -127,7 +127,7 @@ def get_args():
 
     parser.add_argument('-img_size', type=int, default=10, help='only used for CNN 2D structures')
 
-    parser.add_argument('-num_block', type=int, default=1000)
+    parser.add_argument('-num_block', type=int, default=10000)
 
     parser.add_argument('-test_channel_mode',
                         choices=['block_norm','block_norm_ste'],
