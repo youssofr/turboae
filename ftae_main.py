@@ -4,7 +4,7 @@ import torch.optim as optim
 import numpy as np
 import sys
 from os.path import isdir
-from os import 
+from os import mkdir
 from ftae_get_args import get_args
 from ftae_trainer  import ftae_train, ftae_validate, ftae_test
 
