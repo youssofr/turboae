@@ -7,14 +7,14 @@ import torch
 import torch.optim as optim
 import numpy as np
 import sys
+from os.path import isdir
+from os import mkdir
 from get_args import get_args
 from trainer import train, validate, test
 
 from numpy import arange
 from numpy.random import mtrand
 
-from os.path import isdir
-from os import mkdir
 
 # utils for logger
 class Logger(object):
@@ -104,10 +104,12 @@ if __name__ == '__main__':
     #################################################
     identity = str(np.random.random())[2:8]
     print('[ID]', identity)
-
-    # put all printed things to log file
+    
+    # create logs file first
     if not isdir('./logs'):
         mkdir('logs')
+    
+    # put all printed things to log file
     logfile = open('./logs/'+identity+'_log.txt', 'a')
     sys.stdout = Logger('./logs/'+identity+'_log.txt', sys.stdout)
 
